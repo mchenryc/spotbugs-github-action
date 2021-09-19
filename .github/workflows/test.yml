@@ -23,5 +23,5 @@ jobs:
     - uses: ./
       with: 
         path: |
-          !*/node_modules/**/*
-          **/spotbugsXml.xml
+          reports/**/spotbugsXml.xml
+          reports2/**/spotbugsXml.xml

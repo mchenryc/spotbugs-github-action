@@ -289,6 +289,9 @@ function findResults(searchPath, globOptions) {
         const searchResults = [];
         const globber = yield glob.create(searchPath, globOptions || getDefaultGlobOptions());
         const rawSearchResults = yield globber.glob();
+        (0, core_1.debug)(`globbed searchPath: '${searchPath}' `);
+        (0, core_1.debug)(`globbed rawSearchResults: '${rawSearchResults}' `);
+        (0, core_1.debug)(`globbed globber.searchPaths: '${globber.getSearchPaths()}' `);
         /*
             Directories will be rejected if attempted to be uploaded. This includes just empty
             directories so filter any directories out from the raw search results
@@ -307,14 +310,14 @@ function findResults(searchPath, globOptions) {
             simultaneously supported this will change
           */
         const searchPaths = globber.getSearchPaths();
-        if (searchPaths.length > 1) {
-            throw new Error('Only 1 search path should be returned');
-        }
+        // if (searchPaths.length > 1) {
+        //   throw new Error('Only 1 search path should be returned')
+        // }
         /*
             Special case for a single file artifact that is uploaded without a directory or wildcard pattern. The directory structure is
             not preserved and the root directory will be the single files parent directory
           */
-        if (searchResults.length === 1 && searchPaths[0] === searchResults[0]) {
+        if (searchPaths.length === 1 && searchResults.length === 1 && searchPaths[0] === searchResults[0]) {
             return {
                 filesToUpload: searchResults,
                 rootDirectory: (0, path_1.dirname)(searchResults[0])
